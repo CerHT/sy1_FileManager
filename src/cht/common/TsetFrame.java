@@ -115,7 +115,7 @@ public class TsetFrame extends JFrame {
                         lblNewLabel.setText(path.getPath());
                         //System.out.println(path.getPath());
                     } else if (temp.isFile()) {
-                        System.out.println("is txt");
+                        //System.out.println("is txt");
                         String pattern = "[\\w.]*\\.txt";
                         //System.out.println(temp.getName());
                         //String fileName = temp.getName();
@@ -123,11 +123,13 @@ public class TsetFrame extends JFrame {
                             System.out.println("is input");
                             String str = JOptionPane.showInputDialog("请输入内容");
                             Write write = new Write();
-                            write.wirte(temp, str);
+                            if (write.wirte(temp, str)) {
+                                showList(fileList);
+                            }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "暂时无法写入该类型的文件");
                         }
                     }
-                } else {
-                    //showList(fileList);
                 }
             }
         });

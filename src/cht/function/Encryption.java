@@ -29,14 +29,13 @@ public class Encryption {
 			KeyGenerator generator=KeyGenerator.getInstance("DES");
 			generator.init(new SecureRandom(strKey.getBytes()));
 			this.key=generator.generateKey();
-			generator=null;
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new RuntimeException("Error"+e);
 		}
 	}
 	
-	/*
+	/**
 	 * 加密算法
 	 * 加密开始，分为目标文件和输出文件
 	 * enFile为目标文件
