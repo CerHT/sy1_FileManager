@@ -44,12 +44,15 @@ public class Encryption {
 	
 	public void encrypt(File file) throws Exception
 	{
-        this.getKey(file.getName());
+        this.getKey(file.getParentFile().getName());
+        if (this.key == null){
+        	this.getKey(file.getName());
+		}
 		if(file.exists()&&file.isFile())
 		{
 			Cipher cipher=Cipher.getInstance("DES");
 			cipher.init(Cipher.ENCRYPT_MODE,this.key);
-		
+
 			InputStream ins=new FileInputStream(file);
 
             //加密完后的文件
@@ -59,7 +62,7 @@ public class Encryption {
 
 
 			OutputStream outs=new FileOutputStream(out);
-		
+
 			CipherInputStream cis=new CipherInputStream(ins, cipher);
 			byte[] buffer=new byte[1024];
 			int i;
@@ -85,7 +88,10 @@ public class Encryption {
 	 */
 	public void decrypt(File file) throws Exception
 	{
-        this.getKey(file.getName());
+        this.getKey(file.getParentFile().getName());
+        if (this.key == null){
+        	getKey(file.getName());
+		}
 		if(file.exists()&&file.isFile())
 		{   //加密方式
 			Cipher cipher=Cipher.getInstance("DES");
