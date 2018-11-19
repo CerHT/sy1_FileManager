@@ -102,34 +102,29 @@ public class Frame extends JFrame {
         fileList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) {
-                    if (e.getClickCount() == 2) {
-                        File temp;
-                        if (String.valueOf(path.getPath().charAt(path.getPath().length() - 1)).equals(File.separator)) {
-                            temp = new File(path.getPath() + fileList.getSelectedValue().toString());
-                        } else {
-                            temp = new File(path.getPath() + File.separator + fileList.getSelectedValue().toString());
-                        }
-                        if (temp.isDirectory()) {
-                            path.updatePath(fileList.getSelectedValue().toString());
-                            showList(fileList);
-                            lblNewLabel.setText(path.getPath());
-                        } else if (temp.isFile()) {
-                            String pattern = "[\\w.]*\\.txt";
-                            if (Pattern.matches(pattern, temp.getName())) {
-                                String str = JOptionPane.showInputDialog("请输入内容");
-                                Write write = new Write();
-                                if (write.write(temp, str)) {
-                                    showList(fileList);
-                                }
-                            } else {
-                                JOptionPane.showMessageDialog(null, "暂时无法写入该类型的文件");
+                if (e.getClickCount() == 2) {
+                    File temp;
+                    if (String.valueOf(path.getPath().charAt(path.getPath().length() - 1)).equals(File.separator)) {
+                        temp = new File(path.getPath() + fileList.getSelectedValue().toString());
+                    } else {
+                        temp = new File(path.getPath() + File.separator + fileList.getSelectedValue().toString());
+                    }
+                    if (temp.isDirectory()) {
+                        path.updatePath(fileList.getSelectedValue().toString());
+                        showList(fileList);
+                        lblNewLabel.setText(path.getPath());
+                    } else if (temp.isFile()) {
+                        String pattern = "[\\w.]*\\.txt";
+                        if (Pattern.matches(pattern, temp.getName())) {
+                            String str = JOptionPane.showInputDialog("请输入内容");
+                            Write write = new Write();
+                            if (write.write(temp, str)) {
+                                showList(fileList);
                             }
+                        } else {
+                            JOptionPane.showMessageDialog(null, "暂时无法写入该类型的文件");
                         }
                     }
-                } else {
-                    System.err.println("this is button3");
-                    showList(fileList);
                 }
             }
         });
@@ -284,6 +279,14 @@ public class Frame extends JFrame {
             } else if (file.exists() && file.isFile()) {
                 deleteFolder.deleteFile(file);
             }
+            //  这里停了1ms是因为
+            //  不知名bug
+            //
+//            try {
+//                Thread.sleep(1);
+//            } catch (InterruptedException e1) {
+//                e1.printStackTrace();
+//            }
             showList(fileList);
         });
         popupMenu.add(mntmDelect);
@@ -408,7 +411,7 @@ public class Frame extends JFrame {
             File file = new File(str);
             String name = JOptionPane.showInputDialog("请输入压缩文件的名称(无需后缀名)");
             try {
-                if (name.equals("")) {
+                if (!name.equals("")) {
                     ZipUtil zipUtil = new ZipUtil();
                     if (zipUtil.zipMultiFile(file, name, true)) {
                         JOptionPane.showMessageDialog(null, "压缩成功");
