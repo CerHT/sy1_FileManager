@@ -43,7 +43,6 @@ public class ZipUtil {
      * @param file    文件所在目录
      * @param zipName 压缩后zip文件名称
      * @param dirFlag zip文件中第一层是否包含一级目录，true包含；false没有
-     * @param zipName 压缩文件名字
      * @author 陈瀚涛
      * 2015年6月9日
      */
