@@ -23,7 +23,7 @@ public class Encryption {
 //		getKey(str);
 //	}
 
-    private void getKey(String strKey)
+    private void setKey(String strKey)
 	{
 		try {
 			KeyGenerator generator=KeyGenerator.getInstance("DES");
@@ -44,9 +44,9 @@ public class Encryption {
 	
 	public void encrypt(File file) throws Exception
 	{
-        this.getKey(file.getParentFile().getName());
+        this.setKey(file.getParentFile().getName());
         if (this.key == null){
-        	this.getKey(file.getName());
+        	this.setKey(file.getName());
 		}
 		if(file.exists()&&file.isFile())
 		{
@@ -81,16 +81,16 @@ public class Encryption {
             System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
 		}
 	}
-	
+
 	/*
 	 * 解密算法
 	 * 
 	 */
 	public void decrypt(File file) throws Exception
 	{
-        this.getKey(file.getParentFile().getName());
+        this.setKey(file.getParentFile().getName());
         if (this.key == null){
-        	getKey(file.getName());
+        	setKey(file.getName());
 		}
 		if(file.exists()&&file.isFile())
 		{   //加密方式
