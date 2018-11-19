@@ -23,20 +23,19 @@ public class Encryption {
 //		getKey(str);
 //	}
 
-    private void getKey(String strKey)
+    private void setKey(String strKey)
 	{
 		try {
 			KeyGenerator generator=KeyGenerator.getInstance("DES");
 			generator.init(new SecureRandom(strKey.getBytes()));
 			this.key=generator.generateKey();
-			generator=null;
 		} catch (Exception e) {
 			// TODO: handle exception
 			throw new RuntimeException("Error"+e);
 		}
 	}
 	
-	/*
+	/**
 	 * 加密算法
 	 * 加密开始，分为目标文件和输出文件
 	 * enFile为目标文件
@@ -45,12 +44,15 @@ public class Encryption {
 	
 	public void encrypt(File file) throws Exception
 	{
-        this.getKey(file.getName());
+        this.setKey(file.getParentFile().getName());
+        if (this.key == null){
+        	this.setKey(file.getName());
+		}
 		if(file.exists()&&file.isFile())
 		{
 			Cipher cipher=Cipher.getInstance("DES");
 			cipher.init(Cipher.ENCRYPT_MODE,this.key);
-		
+
 			InputStream ins=new FileInputStream(file);
 
             //加密完后的文件
@@ -60,7 +62,7 @@ public class Encryption {
 
 
 			OutputStream outs=new FileOutputStream(out);
-		
+
 			CipherInputStream cis=new CipherInputStream(ins, cipher);
 			byte[] buffer=new byte[1024];
 			int i;
@@ -76,17 +78,20 @@ public class Encryption {
             DeleteFolder delete = new DeleteFolder();
             System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
             File result = new File(out.getPath());
-            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
+            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败") + ": " + result.getName() );
 		}
 	}
-	
+
 	/*
 	 * 解密算法
 	 * 
 	 */
 	public void decrypt(File file) throws Exception
 	{
-        this.getKey(file.getName());
+        this.setKey(file.getParentFile().getName());
+        if (this.key == null){
+        	setKey(file.getName());
+		}
 		if(file.exists()&&file.isFile())
 		{   //加密方式
 			Cipher cipher=Cipher.getInstance("DES");

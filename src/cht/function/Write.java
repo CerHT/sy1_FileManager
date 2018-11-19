@@ -10,13 +10,7 @@ import java.io.FileWriter;
  * @since 2018/10/16
  */
 public class Write {
-    public Write(){}
-
-    public Write(File file, String input){
-        this.wirte(file, input);
-    }
-
-    public boolean wirte(File file, String input) {
+    public boolean write(File file, String input) {
         try {
             if (!file.exists()) {
                 CreateFile createFile = new CreateFile();
