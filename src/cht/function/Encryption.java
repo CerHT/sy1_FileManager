@@ -78,7 +78,7 @@ public class Encryption {
             DeleteFolder delete = new DeleteFolder();
             System.out.println("删除源文件 " + (delete.deleteFile(file) ? "成功":"失败"));
             File result = new File(out.getPath());
-            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败"));
+            System.out.println("改名 "+ (result.renameTo(file) ? "成功":"失败") + ": " + result.getName() );
 		}
 	}
 

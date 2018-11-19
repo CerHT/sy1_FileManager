@@ -120,10 +120,10 @@ public class TsetFrame extends JFrame {
                         //System.out.println(temp.getName());
                         //String fileName = temp.getName();
                         if (Pattern.matches(pattern, temp.getName())) {
-                            System.out.println("is input");
+                            //System.out.println("is input");
                             String str = JOptionPane.showInputDialog("请输入内容");
                             Write write = new Write();
-                            if (write.wirte(temp, str)) {
+                            if (write.write(temp, str)) {
                                 showList(fileList);
                             }
                         } else {
@@ -366,6 +366,7 @@ public class TsetFrame extends JFrame {
                 try {
                     temp.encrypt(file);
                     System.out.println("加密成功");
+                    JOptionPane.showMessageDialog(null, "请牢记文件所在位置及文件名，注意备份");
                     showList(fileList);
                 } catch (Exception e1) {
                     System.out.println("加密失败");
@@ -419,32 +420,40 @@ public class TsetFrame extends JFrame {
         });
         popupMenu.add(mntmCompress);
 
+        //解压按钮以及监听事件
         JMenuItem mntmDecompress = new JMenuItem("解压");
         mntmDecompress.addActionListener(e -> {
             String str = path.getPath() + File.separator + fileList.getSelectedValue().toString();
             File file = new File(str);
-            try {
-                if (file.isFile()) {
-                    String out = JOptionPane.showInputDialog("请输入解压后文件夹的名称");
-                    CreateFile createFile = new CreateFile();
-                    createFile.mkdir(new File(path.getPath() + File.separator + out));
-                    if (new ZipUtil().unZip(file, new File(path.getPath() + File.separator + out))) {
-                        JOptionPane.showMessageDialog(null, "解压成功");
-                        showList(fileList);
+            String pattern = "[\\w.]*\\.zip";
+            if (file.isFile() && Pattern.matches(pattern, file.getName())) {
+                try {
+                    if (file.isFile()) {
+                        String out = JOptionPane.showInputDialog("请输入解压后文件夹的名称");
+                        CreateFile createFile = new CreateFile();
+                        createFile.mkdir(new File(path.getPath() + File.separator + out));
+                        if (new ZipUtil().unZip(file, new File(path.getPath() + File.separator + out))) {
+                            JOptionPane.showMessageDialog(null, "解压成功");
+                            showList(fileList);
+                        } else {
+                            JOptionPane.showMessageDialog(null, "解压失败");
+                        }
                     } else {
-                        JOptionPane.showMessageDialog(null, "解压失败");
+                        JOptionPane.showMessageDialog(null, "不是压缩文件！");
                     }
-                } else {
-                    JOptionPane.showMessageDialog(null, "不是压缩文件！");
+                } catch (Exception e1) {
+                    e1.printStackTrace();
                 }
-            } catch (Exception e1) {
-
-                e1.printStackTrace();
+            } else {
+                JOptionPane.showMessageDialog(null, "不是压缩文件！");
             }
         });
         popupMenu.add(mntmDecompress);
 
-
+        //添加刷新按钮
+        JMenuItem refreshItem = new JMenuItem("刷新");
+        refreshItem.addActionListener(e -> showList(fileList));
+        popupMenu.add(refreshItem);
 
         /*
          *加密解密结束
