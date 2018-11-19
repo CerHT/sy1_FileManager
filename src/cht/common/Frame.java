@@ -46,7 +46,7 @@ import cht.function.ZipUtil;
 
 
 @SuppressWarnings("serial")
-public class TsetFrame extends JFrame {
+public class Frame extends JFrame {
 
     /*
      * 全局路径
@@ -66,7 +66,7 @@ public class TsetFrame extends JFrame {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
-                TsetFrame frame = new TsetFrame();
+                Frame frame = new Frame();
                 frame.setVisible(true);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -75,7 +75,7 @@ public class TsetFrame extends JFrame {
     }
 
     @SuppressWarnings({"rawtypes"})
-    private TsetFrame() {
+    private Frame() {
         setBackground(Color.CYAN);
         setTitle("MyFileManager");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,34 +102,34 @@ public class TsetFrame extends JFrame {
         fileList.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getClickCount() == 2) {
-                    File temp;
-                    if (String.valueOf(path.getPath().charAt(path.getPath().length() - 1)).equals(File.separator)) {
-                        temp = new File(path.getPath() + fileList.getSelectedValue().toString());
-                    } else {
-                        temp = new File(path.getPath() + File.separator + fileList.getSelectedValue().toString());
-                    }
-                    if (temp.isDirectory()) {
-                        path.updatePath(fileList.getSelectedValue().toString());
-                        showList(fileList);
-                        lblNewLabel.setText(path.getPath());
-                        //System.out.println(path.getPath());
-                    } else if (temp.isFile()) {
-                        //System.out.println("is txt");
-                        String pattern = "[\\w.]*\\.txt";
-                        //System.out.println(temp.getName());
-                        //String fileName = temp.getName();
-                        if (Pattern.matches(pattern, temp.getName())) {
-                            //System.out.println("is input");
-                            String str = JOptionPane.showInputDialog("请输入内容");
-                            Write write = new Write();
-                            if (write.write(temp, str)) {
-                                showList(fileList);
-                            }
+                if (e.getButton() == MouseEvent.BUTTON1) {
+                    if (e.getClickCount() == 2) {
+                        File temp;
+                        if (String.valueOf(path.getPath().charAt(path.getPath().length() - 1)).equals(File.separator)) {
+                            temp = new File(path.getPath() + fileList.getSelectedValue().toString());
                         } else {
-                            JOptionPane.showMessageDialog(null, "暂时无法写入该类型的文件");
+                            temp = new File(path.getPath() + File.separator + fileList.getSelectedValue().toString());
+                        }
+                        if (temp.isDirectory()) {
+                            path.updatePath(fileList.getSelectedValue().toString());
+                            showList(fileList);
+                            lblNewLabel.setText(path.getPath());
+                        } else if (temp.isFile()) {
+                            String pattern = "[\\w.]*\\.txt";
+                            if (Pattern.matches(pattern, temp.getName())) {
+                                String str = JOptionPane.showInputDialog("请输入内容");
+                                Write write = new Write();
+                                if (write.write(temp, str)) {
+                                    showList(fileList);
+                                }
+                            } else {
+                                JOptionPane.showMessageDialog(null, "暂时无法写入该类型的文件");
+                            }
                         }
                     }
+                } else {
+                    System.err.println("this is button3");
+                    showList(fileList);
                 }
             }
         });
@@ -245,16 +245,18 @@ public class TsetFrame extends JFrame {
         JMenuItem mntmNewFile = new JMenuItem("新文件");
         mntmNewFile.addActionListener(e -> {
             String str = JOptionPane.showInputDialog("请输入文件名(带后缀)");
-            try {
-                CreateFile createFile = new CreateFile();
-                if (createFile.createFile(new File(path.getPath() + File.separator + str))) {
+            if (str != null) {
+                try {
+                    CreateFile createFile = new CreateFile();
+                    if (createFile.createFile(new File(path.getPath() + File.separator + str))) {
 
+                        showList(fileList);
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } finally {
                     showList(fileList);
                 }
-            } catch (IOException e1) {
-                e1.printStackTrace();
-            } finally {
-                showList(fileList);
             }
         });
         popupMenu.add(mntmNewFile);
@@ -263,10 +265,12 @@ public class TsetFrame extends JFrame {
         mntmNewFolder.addActionListener(e -> {
             String str = JOptionPane.showInputDialog("请输入文件夹名");
             CreateFile createFile = new CreateFile();
-            if (createFile.mkdir(new File(path.getPath() + File.separator + str + File.separator))) {
+            if (str != null) {
+                if (createFile.mkdir(new File(path.getPath() + File.separator + str + File.separator))) {
+                    showList(fileList);
+                }
                 showList(fileList);
             }
-            showList(fileList);
         });
         popupMenu.add(mntmNewFolder);
 
@@ -303,19 +307,21 @@ public class TsetFrame extends JFrame {
 
         mntmCopy.addActionListener(e -> {
             String fileName = fileList.getSelectedValue().toString();
-            File file = new File(path.getPath() + File.separator + fileName);
-            if (file.exists() && file.isFile()) {
-                copyFilePath.setPath(file.getAbsolutePath());
-                mntmPaste.setEnabled(true);
-                copyFolderPath.setPath(null);
-            } else if (file.exists() && file.isDirectory()) {
-                copyFolderPath.setPath(file.getAbsolutePath());
-                copyFilePath.setPath(null);
-                mntmPaste.setEnabled(true);
+            if (fileName != null) {
+                File file = new File(path.getPath() + File.separator + fileName);
+                if (file.exists() && file.isFile()) {
+                    copyFilePath.setPath(file.getAbsolutePath());
+                    mntmPaste.setEnabled(true);
+                    copyFolderPath.setPath(null);
+                } else if (file.exists() && file.isDirectory()) {
+                    copyFolderPath.setPath(file.getAbsolutePath());
+                    copyFilePath.setPath(null);
+                    mntmPaste.setEnabled(true);
+                }
             }
         });
 
-        mntmPaste.addActionListener(arg0 -> {
+        mntmPaste.addActionListener(e -> {
 
             File file = new File(path.getPath());
 
@@ -325,8 +331,8 @@ public class TsetFrame extends JFrame {
                     Copy copy = new Copy();
                     copy.copyFile(copyFilePath.getPath(), file.getAbsolutePath() + File.separator + copyName.getName());
                     showList(fileList);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (IOException e1) {
+                    e1.printStackTrace();
                 }
             } else if (copyFolderPath.getPath() != null) {
                 try {
@@ -336,9 +342,9 @@ public class TsetFrame extends JFrame {
                     System.out.println(path.getPath());
                     showList(fileList);
 
-                } catch (IOException e) {
+                } catch (IOException e1) {
 
-                    e.printStackTrace();
+                    e1.printStackTrace();
                 }
             }
         });
