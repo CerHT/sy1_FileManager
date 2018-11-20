@@ -15,14 +15,6 @@ import javax.crypto.KeyGenerator;
 
 public class Encryption {
 	private Key key;
-
-//	public Encryption(){}
-//
-//	public Encryption(String str)
-//	{
-//		getKey(str);
-//	}
-
     private void setKey(String strKey)
 	{
 		try {

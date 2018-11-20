@@ -95,7 +95,6 @@ public class Frame extends JFrame {
         contentPane.add(panel, BorderLayout.CENTER);
 
         JList fileList = new JList();
-        fileList.setBorder(new CompoundBorder());
         fileList.setBackground(Color.LIGHT_GRAY);
         fileList.setFont(new Font("宋体", Font.PLAIN, 20));
 
@@ -291,7 +290,7 @@ public class Frame extends JFrame {
         });
         popupMenu.add(mntmDelect);
 
-        /**
+        /*
          * 复制粘贴
          * @param flag 控制paste的功能
          * @param copyPath 源文件的路径
