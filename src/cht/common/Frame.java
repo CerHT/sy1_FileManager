@@ -281,7 +281,7 @@ public class Frame extends JFrame {
             }
             //  这里停了1ms是因为
             //  不知名bug
-            //
+            //  某些情况下，删除其中带有文件的文件夹后，列表不会刷新
             try {
                 Thread.sleep(1);
             } catch (InterruptedException e1) {
