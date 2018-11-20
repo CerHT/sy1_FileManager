@@ -5,8 +5,6 @@ import java.io.File;
 public class DeleteFolder {
 
     public boolean deleteFile(File path) {
-        //String path=new String(Path.getPath());
-        //File file=new File(path+fileName);
         if (path.exists() && path.isFile()) {
             if (path.delete()) {
                 System.out.println("文件删除successed");

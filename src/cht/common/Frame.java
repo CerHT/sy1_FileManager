@@ -282,11 +282,11 @@ public class Frame extends JFrame {
             //  这里停了1ms是因为
             //  不知名bug
             //
-//            try {
-//                Thread.sleep(1);
-//            } catch (InterruptedException e1) {
-//                e1.printStackTrace();
-//            }
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException e1) {
+                e1.printStackTrace();
+            }
             showList(fileList);
         });
         popupMenu.add(mntmDelect);
