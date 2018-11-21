@@ -1,41 +1,16 @@
 package cht.common;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.border.EmptyBorder;
-
-import java.awt.Color;
-
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.LayoutStyle.ComponentPlacement;
-
-import java.io.File;
-import java.io.IOException;
-
-import javax.swing.JList;
-import javax.swing.JOptionPane;
-
+import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
-
-import java.awt.Font;
-
-import javax.swing.JPopupMenu;
-
-import java.awt.Component;
+import java.io.File;
+import java.io.IOException;
 import java.util.regex.Pattern;
 
-import javax.swing.border.CompoundBorder;
-
-import javax.swing.JMenuItem;
+import javax.swing.*;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
+import javax.swing.border.EmptyBorder;
 
 import cht.function.Copy;
 import cht.function.CreateFile;
