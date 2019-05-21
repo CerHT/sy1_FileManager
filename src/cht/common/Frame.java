@@ -88,7 +88,7 @@ public class Frame extends JFrame {
                         showList(fileList);
                         lblNewLabel.setText(path.getPath());
                     } else if (temp.isFile()) {
-                        String pattern = "[\\w.]*\\.txt";
+                        String pattern = ".*\\.txt";
                         if (Pattern.matches(pattern, temp.getName())) {
                             String str = JOptionPane.showInputDialog("请输入内容");
                             Write write = new Write();
