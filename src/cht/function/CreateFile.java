@@ -14,8 +14,7 @@ public class CreateFile{
         }
         return false;
 	}
-	
-	
+
 	public boolean mkdir(File path)
 	{
 		if(path.mkdir())
