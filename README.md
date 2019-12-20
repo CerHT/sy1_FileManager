@@ -1,4 +1,5 @@
 # sy1_FileManager
+打算先用这个练个手吧，混合kotlin
 一个简易的Java文件管理器，swing布局  
 开发者请切换至update分支
 
